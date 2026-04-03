@@ -26,7 +26,7 @@ from sklearn.metrics import (
 )
 
 # Indicate CSV path from folder of generated ETF historical data
-hist_path = 'NonNeuralNetwork/etf_historical/AAPL_hist.csv'
+hist_path = r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\etf_historical\ASTS_hist.csv'
 
 # Attempt access and read of CSV file
 try:
@@ -66,7 +66,7 @@ time_series_frame['Close'] = label                          # Label column is ad
 time_series_frame = time_series_frame.dropna()              # Indices with NaN feature values dropped to unify data frame dimensions
 
 # Save time series dataframe to CSV for reference
-time_series_frame.to_csv (r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\time_series_frame' + '\\' 'time_series_AAPL.csv')
+time_series_frame.to_csv (r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\time_series_frame' + '\\' 'time_series_ASTS.csv')
 
 # Assign closing price as label
 X = time_series_frame.drop('Close', axis = 1)                         # Features/Training data includes all columns of feature values except for label and timestamp; indicates features are arranged by column
@@ -93,7 +93,7 @@ label_eval_frame['Actual_Close'] = y_test
 label_eval_frame['Predicted_Close'] = y_predicted
 
 # Save dataframe to CSV for reference
-label_eval_frame.to_csv (r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\label_eval' + '\\' 'label_eval_AAPL.csv')
+label_eval_frame.to_csv (r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\label_eval' + '\\' 'label_eval_ASTS.csv')
 
 # Echo evaluation metrics
 

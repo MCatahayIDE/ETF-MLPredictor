@@ -17,7 +17,7 @@ from sklearn.model_selection import TimeSeriesSplit     # Stock Prediction Must 
 # Evaluation Metrics
 
 # CSV Path to access histrical data
-hist_path = 'NonNeuralNetwork/etf_historical/LRCX_hist.csv'
+hist_path = r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\etf_historical\ASTS_hist.csv'
 
 # Attempt to access and read CSV onto dataframe
 try: 
@@ -65,7 +65,7 @@ scale = StandardScaler()
 # Test/Evaluation Data Prepared; Initialize Model
 lgb_model = lgb.LGBMRegressor(
     objective = 'regression',
-    n_estimators = 2000,
+    n_estimators = 200,
     learning_rate = 0.025,
     num_leaves = 256,
     min_child_samples = 2,
@@ -91,7 +91,7 @@ lgb_eval_frame['Actual_Close'] = y_test
 lgb_eval_frame['Predicted_Close'] = y_predicted
 
 # Store evalation dataframe to CSV
-lgb_eval_frame.to_csv (r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\label_eval' + '\\' 'lgb_eval_LRCX.csv')
+lgb_eval_frame.to_csv (r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\label_eval' + '\\' 'lgb_eval_ASTS-1.csv')
 
 # Echo Direct Comparison
 
