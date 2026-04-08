@@ -86,7 +86,7 @@ def input_derived_technicals (df: pd.DataFrame, symbol: str) -> pd.DataFrame:
     """
     Moving Average Convergence Divergence (MACD)
     - Compares short-term average with longer-term average
-    - Indicates whether stock is moving faster or trending relative to its usual movement 
+    - Indicates whether stock is trending faster or slower relative to its usual movement 
     """
 
     # Standard MACD Params
@@ -115,21 +115,12 @@ def input_derived_technicals (df: pd.DataFrame, symbol: str) -> pd.DataFrame:
     # Save updated dataframe to directory as csv
     derived_df.to_csv (r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\history_technicals' + '\\' + symbol + 'hist_w_features.csv')
     
-    return df
-
-def gen_feature_infused_df (df: pd.DataFrame, symbol: str) -> pd.DataFrame:
-    """
-    Call helpers and feature derivation methods to generate new dataframe with all features
-    """
-
-    updated_df = input_derived_technicals(df)    # Temporary implementation; saves generated history to CSV denoted with symbol name
-    
-
+    return derived_df
 
 # Example/Debug Method Calls
 if __name__ == "__main__":
     # Test for history extraction method (get_hist_over_range)
-    etf_symbol = "ASTS"
+    etf_symbol = "MU"
     hist = get_hist_over_range (etf_symbol, period = "10y" , interval = "1d")
     history_with_technicals = input_derived_technicals(hist, etf_symbol)
     print ("Historial Data and Technicals for Symbol: " + etf_symbol)

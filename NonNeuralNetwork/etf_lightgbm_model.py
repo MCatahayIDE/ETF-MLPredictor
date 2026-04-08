@@ -17,7 +17,7 @@ from sklearn.model_selection import TimeSeriesSplit     # Stock Prediction Must 
 # Evaluation Metrics
 
 # CSV Path to access histrical data
-hist_path = r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\etf_historical\ASTS_hist.csv'
+hist_path = r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\history_technicals\MUhist_w_features.csv'
 
 # Attempt to access and read CSV onto dataframe
 try: 
@@ -40,7 +40,14 @@ lagged_frame['Prev_Low'] = dframe['Low'].shift(1)
 lagged_frame['Prev_Close'] = dframe['Close'].shift(1)
 lagged_frame['Prev_Volume'] = dframe['Volume'].shift(1)
 
-label = dframe['Close']                    # Assign Closing Price as Label, no shift
+#Similarly, lag derived technicals
+lagged_frame['Prev_RSI'] = dframe['RSI'].shift(1)
+lagged_frame['Prev_MACD_Line'] = dframe['MACD_Line'].shift(1)
+lagged_frame['Prev_MACD_Signal'] = dframe['MACD_Signal'].shift(1)
+lagged_frame['Prev_MACD_Histogram'] = dframe['MACD_Histogram'].shift(1)
+
+
+label = dframe['Close'].pct_change()                     # Assign Closing Price as Label, no shift
 
 # Recombine shifted features and centered label
 time_series_frame = lagged_frame.copy()
@@ -91,7 +98,7 @@ lgb_eval_frame['Actual_Close'] = y_test
 lgb_eval_frame['Predicted_Close'] = y_predicted
 
 # Store evalation dataframe to CSV
-lgb_eval_frame.to_csv (r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\label_eval' + '\\' 'lgb_eval_ASTS-1.csv')
+lgb_eval_frame.to_csv (r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\label_eval' + '\\' 'lgb_eval_MU.csv')
 
 # Echo Direct Comparison
 

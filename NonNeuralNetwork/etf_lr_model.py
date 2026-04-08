@@ -26,7 +26,7 @@ from sklearn.metrics import (
 )
 
 # Indicate CSV path from folder of generated ETF historical data
-hist_path = r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\etf_historical\ASTS_hist.csv'
+hist_path = r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\history_technicals\MUhist_w_features.csv'
 
 # Attempt access and read of CSV file
 try:
@@ -57,8 +57,20 @@ lagged_frame['Prev_Low'] = dframe['Low'].shift(1)
 lagged_frame['Prev_Close'] = dframe['Close'].shift(1)
 lagged_frame['Prev_Volume'] = dframe['Volume'].shift(1)
 
-# Extract label, the closing price
-label = dframe['Close']
+#Similarly, lag derived technicals
+lagged_frame['Prev_RSI'] = dframe['RSI'].shift(1)
+lagged_frame['Prev_MACD_Line'] = dframe['MACD_Line'].shift(1)
+lagged_frame['Prev_MACD_Signal'] = dframe['MACD_Signal'].shift(1)
+lagged_frame['Prev_MACD_Histogram'] = dframe['MACD_Histogram'].shift(1)
+
+#TODO: Parameterize technical and feature lagging, append Prev_ prefix
+# feature_cols = ['Open', 'High', 'Low', ...]
+# Shift all at once and prefix them with 'Prev_'
+#lagged_frame = dframe[feature_cols].shift(1).add_prefix('Prev_')
+
+# Extract label, the percent change inclosing price relative to previous day shifted by -1 to predict next day's closing price
+#TODO: Switch label to be percent change rather than raw price, add new dropna
+label = dframe['Close'].pct_change()                    
 
 #Concatenate lagged features with label into new dataframe
 time_series_frame = lagged_frame.copy()                     # New dataframe first gets lagged features
@@ -66,7 +78,7 @@ time_series_frame['Close'] = label                          # Label column is ad
 time_series_frame = time_series_frame.dropna()              # Indices with NaN feature values dropped to unify data frame dimensions
 
 # Save time series dataframe to CSV for reference
-time_series_frame.to_csv (r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\time_series_frame' + '\\' 'time_series_ASTS.csv')
+time_series_frame.to_csv (r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\time_series_frame' + '\\' 'time_series_MU.csv')
 
 # Assign closing price as label
 X = time_series_frame.drop('Close', axis = 1)                         # Features/Training data includes all columns of feature values except for label and timestamp; indicates features are arranged by column
@@ -93,7 +105,7 @@ label_eval_frame['Actual_Close'] = y_test
 label_eval_frame['Predicted_Close'] = y_predicted
 
 # Save dataframe to CSV for reference
-label_eval_frame.to_csv (r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\label_eval' + '\\' 'label_eval_ASTS.csv')
+label_eval_frame.to_csv (r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\label_eval' + '\\' 'label_eval_MU.csv')
 
 # Echo evaluation metrics
 
