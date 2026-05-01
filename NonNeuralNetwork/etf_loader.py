@@ -1,10 +1,13 @@
 ## Load ETF Data for Regression  analysis using yfinance API
 
-#Principal Library, yfinance
+# Principal API, DS Libraries, yfinance
 import yfinance as yfi
-
 import pandas as pd
+
 import os
+
+# DB Imports
+from db_utils import upsert_daily_OHLCV
 
 from datetime import datetime
 from typing import Optional, Iterable
@@ -51,7 +54,11 @@ def get_bulk_hist (
 def save_hist_csv ( dframe : pd.DataFrame, filepath : str ) -> None:
     pass
 
-def input_derived_technicals (df: pd.DataFrame, symbol: str) -> pd.DataFrame:
+def input_derived_technicals (df: pd.DataFrame,
+                              symbol: str,
+                              *,
+                              write_to_csv = True,
+                              write_to_db = True) -> pd.DataFrame:
     """
     Derives and inserts technicals for each index into df: RSI, MACD
     """
@@ -111,10 +118,16 @@ def input_derived_technicals (df: pd.DataFrame, symbol: str) -> pd.DataFrame:
     ## ADD TECHNICALS 
 
 
+    # Temporary Dual-Writing Implementation
+    # Save updated dataframe to directory as CSV, as well as a set of entities to SQL Database
 
-    # Save updated dataframe to directory as csv
-    derived_df.to_csv (r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\history_technicals' + '\\' + symbol + 'hist_w_features.csv')
+    if write_to_csv:                                                # Write to CSV if coressponding boolean set to true
+        derived_df.to_csv (r'C:\Users\merc1\OneDrive\Stock_Pred_ML\NonNeuralNetwork\history_technicals' + '\\' + symbol + 'hist_w_features.csv')
     
+    if write_to_db:                                                 # Write to DB if coressponding boolean set to true
+        rows_written = upsert_daily_OHLCV(derived_df, symbol)
+        print (f"SQLite upsert complete fror {symbol}: {rows_written} rows written.")
+
     return derived_df
 
 # Example/Debug Method Calls

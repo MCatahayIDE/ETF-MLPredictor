@@ -4,5 +4,17 @@
 			"path": ".."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
+		"python.analysis.exclude": ["**/.venv/**"],
+		"files.exclude": {
+			"**/.venv": true
+		},
+		"search.exclude": {
+			"**/.venv": true
+		},
+		"files.watcherExclude": {
+			"**/.venv/**": true
+		}
+	}
 }
